@@ -124,7 +124,7 @@ export function createMetronomeAudio(options: MetronomeAudioOptions = {}): Metro
   let bpm = options.initialBpm ?? 120;
   let subdivision: Subdivision = options.initialSubdivision ?? "quarter";
   let accentEnabled = options.initialAccentEnabled ?? true;
-  let soundType: MetronomeSoundType = options.initialSoundType ?? "wood";
+  let soundType: MetronomeSoundType = options.initialSoundType ?? "beep";
 
   let repeatId: number | null = null;
 
@@ -170,7 +170,7 @@ export function createMetronomeAudio(options: MetronomeAudioOptions = {}): Metro
   const armPersistentRepeat = (startTime: number | string) => {
     clearRepeat();
     const tickIv = microStepIntervalTicks();
-    repeatId = Tone.Transport.scheduleRepeat(metronomeCallback, new Tone.Ticks(tickIv), startTime);
+    repeatId = Tone.Transport.scheduleRepeat(metronomeCallback, Tone.Ticks(tickIv), startTime);
   };
 
   /** BPM changes the tick length of a measure; reschedule one repeat without stopping transport. */
@@ -181,7 +181,7 @@ export function createMetronomeAudio(options: MetronomeAudioOptions = {}): Metro
     const tickIv = microStepIntervalTicks();
     const align = Tone.Transport.nextSubdivision("32n");
     clearRepeat();
-    repeatId = Tone.Transport.scheduleRepeat(metronomeCallback, new Tone.Ticks(tickIv), align);
+    repeatId = Tone.Transport.scheduleRepeat(metronomeCallback, Tone.Ticks(tickIv), align);
   };
 
   return {

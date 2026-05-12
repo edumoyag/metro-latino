@@ -44,7 +44,6 @@ const accentMembraneBody = {
 function createWoodKit(): SoundKit {
   const accentBody = new Tone.MembraneSynth(accentMembraneBody).toDestination();
   const accentPing = new Tone.MetalSynth({
-    frequency: 1200,
     envelope: { attack: 0.0005, decay: 0.04, release: 0.02 },
     harmonicity: 8,
     modulationIndex: 32,
@@ -53,8 +52,7 @@ function createWoodKit(): SoundKit {
   }).toDestination();
   const beat = new Tone.MembraneSynth(beatMembraneBody).toDestination();
   const sub = new Tone.MetalSynth({
-    frequency: 200,
-    envelope: { attack: 0.001, decay: 0.08, release: 0.02 },
+   envelope: { attack: 0.001, decay: 0.08, release: 0.02 },
     harmonicity: 5.1,
     modulationIndex: 20,
     resonance: 6000,
@@ -88,10 +86,9 @@ function createWoodKit(): SoundKit {
 
 /** Two-tone cowbell-ish stack using tuned MetalSynths. */
 function createCowbellKit(): SoundKit {
-  const metal = (frequency: number, decay: number, vol: number) => {
+  const metal = (decay: number, vol: number) => {
     const m = new Tone.MetalSynth({
-      frequency,
-      envelope: { attack: 0.001, decay, sustain: 0, release: 0.02 },
+     envelope: { attack: 0.001, decay, sustain: 0, release: 0.02 },
       harmonicity: 5.2,
       modulationIndex: 35,
       resonance: 5500,
@@ -101,9 +98,9 @@ function createCowbellKit(): SoundKit {
     return m;
   };
 
-  const accent = metal(520, 0.22, -1);
-  const beat = metal(685, 0.12, -11);
-  const sub = metal(920, 0.06, -24);
+  const accent = metal(0.22, -1);
+  const beat = metal(0.12, -11);
+  const sub = metal(0.06, -24);
 
   return {
     trigger(time, tier) {
@@ -233,8 +230,7 @@ function createClaveKit(): SoundKit {
     envelope: { attack: 0.0005, decay: 0.04, sustain: 0, release: 0.015 },
   }).toDestination();
   const sub = new Tone.MetalSynth({
-    frequency: 2200,
-    envelope: { attack: 0.0005, decay: 0.025, sustain: 0, release: 0.012 },
+  envelope: { attack: 0.0005, decay: 0.025, sustain: 0, release: 0.012 },
     harmonicity: 6,
     modulationIndex: 45,
     resonance: 7500,
