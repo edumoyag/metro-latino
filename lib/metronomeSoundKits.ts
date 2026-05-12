@@ -3,11 +3,11 @@ import * as Tone from "tone";
 export type MetronomeSoundType = "wood" | "cowbell" | "rimshot" | "beep" | "clave";
 
 export const METRONOME_SOUND_OPTIONS: { value: MetronomeSoundType; label: string }[] = [
-  { value: "wood", label: "Wood click" },
-  { value: "cowbell", label: "Cowbell" },
-  { value: "rimshot", label: "Rimshot" },
-  { value: "beep", label: "Beep" },
-  { value: "clave", label: "Clave" },
+  { value: "wood", label: "Udu Pulse" },
+  { value: "cowbell", label: "Synth Cymbal" },
+  { value: "rimshot", label: "8-Bit Rimshot" },
+  { value: "beep", label: "Crystal Beep" },
+  { value: "clave", label: "Retro Game Beep" },
 ];
 
 export type ClickTier = "accent" | "beat" | "sub";
@@ -50,7 +50,7 @@ function createWoodKit(): SoundKit {
     resonance: 7000,
     octaves: 1.2,
   }).toDestination();
-  const beat = new Tone.MembraneSynth(beatMembraneBody).toDestination();
+  const beatBody = new Tone.MembraneSynth(accentMembraneBody).toDestination();
   const sub = new Tone.MetalSynth({
    envelope: { attack: 0.001, decay: 0.08, release: 0.02 },
     harmonicity: 5.1,
@@ -61,7 +61,7 @@ function createWoodKit(): SoundKit {
 
   accentBody.volume.value = -0.5;
   accentPing.volume.value = -10;
-  beat.volume.value = -14;
+  beatBody.volume.value = -15;
   sub.volume.value = -26;
 
   return {
@@ -70,7 +70,8 @@ function createWoodKit(): SoundKit {
         accentBody.triggerAttackRelease("G2", "16n", time, 1);
         accentPing.triggerAttackRelease("C6", "32n", time, 0.55);
       } else if (tier === "beat") {
-        beat.triggerAttackRelease("D2", "32n", time, 0.72);
+        beatBody.triggerAttackRelease("G2", "16n", time, 1);
+        accentPing.triggerAttackRelease("C6", "64n", time, 0.15);
       } else {
         sub.triggerAttackRelease("G5", "32n", time, 0.35);
       }
@@ -78,7 +79,7 @@ function createWoodKit(): SoundKit {
     dispose() {
       accentBody.dispose();
       accentPing.dispose();
-      beat.dispose();
+      beatBody.dispose();
       sub.dispose();
     },
   };

@@ -18,7 +18,7 @@ export type Subdivision = "quarter" | "eighth" | "triplet" | "sixteenth";
 
 /** UI labels (order matches typical slow → dense workflow). */
 export const SUBDIVISION_OPTIONS: { value: Subdivision; label: string }[] = [
-  { value: "quarter", label: "Quarter notes" },
+  { value: "quarter", label: "Pulse Only" },
   { value: "eighth", label: "Eighth notes" },
   { value: "triplet", label: "Triplets" },
   { value: "sixteenth", label: "Sixteenth notes" },
@@ -78,15 +78,57 @@ const STEPS_PER_BAR: Record<Subdivision, number> = {
   sixteenth: 16,
 };
 
+ let beatsPerBar = 4;
+
+
 function resolveTier(
   stepInBar: number,
   mode: Subdivision,
   accentEnabled: boolean,
 ): ClickTier {
-  const starts = QUARTER_BEAT_STARTS[mode];
-  if (stepInBar === 1 && accentEnabled) return "accent";
-  if (starts.includes(stepInBar)) return "beat";
-  return "sub";
+
+  if (mode === "quarter") {
+    if (stepInBar === 1 && accentEnabled) {
+      return "accent";
+    }
+
+    return "beat";
+  }
+
+  if (mode === "eighth") {
+
+    const isMainBeat = stepInBar % 2 === 1;
+
+    if (stepInBar === 1 && accentEnabled) {
+      return "accent";
+    }
+
+    return isMainBeat ? "beat" : "sub";
+  }
+
+  if (mode === "triplet") {
+
+    const pos = (stepInBar - 1) % 3;
+
+    if (stepInBar === 1 && accentEnabled) {
+      return "accent";
+    }
+
+    return pos === 0 ? "beat" : "sub";
+  }
+
+  if (mode === "sixteenth") {
+
+    const pos = (stepInBar - 1) % 4;
+
+    if (stepInBar === 1 && accentEnabled) {
+      return "accent";
+    }
+
+    return pos === 0 ? "beat" : "sub";
+  }
+
+  return "beat";
 }
 
 function ticksPerMeasure(): number {
@@ -115,8 +157,11 @@ function shouldEmitClick(microStep: number, mode: Subdivision): boolean {
 }
 
 function stepInBarFromMicroStep(microStep: number, mode: Subdivision): number {
-  const stride = MICRO_STRIDE[mode];
-  return Math.floor(microStep / stride) + 1;
+  const beatSize = MICRO_STEPS_PER_BAR / beatsPerBar;
+
+  const beat = Math.floor(microStep / beatSize) + 1;
+
+  return beat;
 }
 
 export function createMetronomeAudio(options: MetronomeAudioOptions = {}): MetronomeAudioHandle {
