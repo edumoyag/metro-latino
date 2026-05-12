@@ -97,15 +97,18 @@ function resolveTier(
 
   if (mode === "eighth") {
 
-    const isMainBeat = stepInBar % 2 === 1;
-
-    if (stepInBar === 1 && accentEnabled) {
-      return "accent";
-    }
-
-    return isMainBeat ? "beat" : "sub";
+  if (stepInBar === 1 && accentEnabled) {
+    return "accent";
   }
 
+  const isPulse = stepInBar % 2 === 1;
+
+  if (isPulse) {
+    return "beat";
+  }
+
+  return "sub";
+ }
   if (mode === "triplet") {
 
     const pos = (stepInBar - 1) % 3;
@@ -156,12 +159,18 @@ function shouldEmitClick(microStep: number, mode: Subdivision): boolean {
   return microStep % stride === 0;
 }
 
-function stepInBarFromMicroStep(microStep: number, mode: Subdivision): number {
-  const beatSize = MICRO_STEPS_PER_BAR / beatsPerBar;
+function stepInBarFromMicroStep(
+  microStep: number,
+  mode: Subdivision,
+): number {
 
-  const beat = Math.floor(microStep / beatSize) + 1;
+  const stride = MICRO_STRIDE[mode];
 
-  return beat;
+  const totalSteps = STEPS_PER_BAR[mode];
+
+  const step = Math.floor(microStep / stride);
+
+  return (step % totalSteps) + 1;
 }
 
 export function createMetronomeAudio(options: MetronomeAudioOptions = {}): MetronomeAudioHandle {

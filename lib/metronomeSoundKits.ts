@@ -137,7 +137,7 @@ function createRimshotKit(): SoundKit {
 
   accent.volume.value = -2;
   beat.volume.value = -12;
-  sub.volume.value = -22;
+  sub.volume.value = -14;
 
   return {
     trigger(time, tier) {
