@@ -51,7 +51,7 @@ export type MetronomeAudioHandle = {
 
 /**
  * Finest common bar grid: LCM(4,8,12,16) = 48 micro-steps per 4/4 measure.
- * One persistent {@link Tone.Transport.scheduleRepeat} runs at this rate; subdivision only gates clicks.
+ * One persistent {@link Tone.getTransport().scheduleRepeat} runs at this rate; subdivision only gates clicks.
  */
 const MICRO_STEPS_PER_BAR = 48;
 
@@ -145,7 +145,7 @@ function microStepIntervalTicks(): number {
 
 function microStepIndexAtTime(audioContextTime: number): number {
   const barTicks = ticksPerMeasure();
-  const tickAt = Tone.Transport.getTicksAtTime(audioContextTime);
+  const tickAt = Tone.getTransport().getTicksAtTime(audioContextTime);
   const phase = ((tickAt % barTicks) + barTicks) % barTicks;
   const width = barTicks / MICRO_STEPS_PER_BAR;
   let m = Math.floor(phase / width);
@@ -196,7 +196,7 @@ export function createMetronomeAudio(options: MetronomeAudioOptions = {}): Metro
 
   const clearRepeat = () => {
     if (repeatId !== null) {
-      Tone.Transport.clear(repeatId);
+      Tone.getTransport().clear(repeatId);
       repeatId = null;
     }
   };
@@ -224,18 +224,7 @@ export function createMetronomeAudio(options: MetronomeAudioOptions = {}): Metro
   const armPersistentRepeat = (startTime: number | string) => {
     clearRepeat();
     const tickIv = microStepIntervalTicks();
-    repeatId = Tone.Transport.scheduleRepeat(metronomeCallback, Tone.Ticks(tickIv), startTime);
-  };
-
-  /** BPM changes the tick length of a measure; reschedule one repeat without stopping transport. */
-  const rescheduleRepeatForNewTempo = () => {
-    if (repeatId === null || Tone.Transport.state !== "started") {
-      return;
-    }
-    const tickIv = microStepIntervalTicks();
-    const align = Tone.Transport.nextSubdivision("32n");
-    clearRepeat();
-    repeatId = Tone.Transport.scheduleRepeat(metronomeCallback, Tone.Ticks(tickIv), align);
+    repeatId = Tone.getTransport().scheduleRepeat(metronomeCallback, Tone.Ticks(tickIv), startTime);
   };
 
   return {
@@ -245,24 +234,23 @@ export function createMetronomeAudio(options: MetronomeAudioOptions = {}): Metro
       tuneToneContextForMobile();
       await resumeAudioContextIfSuspended();
       ensureKits();
-      Tone.Transport.stop();
-      Tone.Transport.cancel();
-      Tone.Transport.bpm.value = bpm;
+      Tone.getTransport().stop();
+      Tone.getTransport().cancel();
+      Tone.getTransport().bpm.value = bpm;
       armPersistentRepeat(0);
-      Tone.Transport.start();
+      Tone.getTransport().start();
       await resumeAudioContextIfSuspended();
     },
 
     stop() {
-      Tone.Transport.stop();
+      Tone.getTransport().stop();
       clearRepeat();
       onBeat?.({ stepInBar: 0, stepsPerBar: STEPS_PER_BAR[subdivision], isAccent: false });
     },
 
     setBpm(next: number) {
-      bpm = next;
-      Tone.Transport.bpm.value = next;
-      rescheduleRepeatForNewTempo();
+    bpm = next;
+    Tone.getTransport().bpm.value = next;
     },
 
     setSubdivision(mode: Subdivision) {
@@ -279,8 +267,8 @@ export function createMetronomeAudio(options: MetronomeAudioOptions = {}): Metro
     },
 
     dispose() {
-      Tone.Transport.stop();
-      Tone.Transport.cancel();
+      Tone.getTransport().stop();
+      Tone.getTransport().cancel();
       clearRepeat();
       soundBundle?.disposeAll();
       soundBundle = null;

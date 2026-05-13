@@ -8,8 +8,8 @@ import {
 } from "@/lib/metronomeAudio";
 import { ensureMobileAudioListeners } from "@/lib/mobileAudioSession";
 
-const MIN_BPM = 40;
-const MAX_BPM = 240;
+const MIN_BPM = 1;
+const MAX_BPM = 360;
 
 export function useMetronome(initialBpm = 100) {
   const [bpm, setBpmState] = useState(() => clampBpm(initialBpm));
