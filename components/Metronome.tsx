@@ -34,95 +34,11 @@ export function Metronome() {
   const controls = useMemo(
     () => (
       <div className="space-y-5">
-        <div>
-          <label htmlFor="subdivision" className="mb-2 block text-xs font-medium text-zinc-400">
-            Subdivision
-          </label>
-          <div className="relative">
-            <select
-              id="subdivision"
-              value={subdivision}
-              aria-label="Subdivision"
-              onChange={(e) => setSubdivision(e.target.value as Subdivision)}
-              className={SELECT_FIELD}
-            >
-              {SUBDIVISION_OPTIONS.map((opt) => (
-                <option key={opt.value} value={opt.value}>
-                  {opt.label}
-                </option>
-              ))}
-            </select>
-            <span
-              className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500"
-              aria-hidden
-            >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M6 9l6 6 6-6" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </span>
-          </div>
-        </div>
+
+
 
         <div>
-          <label htmlFor="sound-type" className="mb-2 block text-xs font-medium text-zinc-400">
-            Sound
-          </label>
-          <div className="relative">
-            <select
-              id="sound-type"
-              value={soundType}
-              aria-label="Metronome sound"
-              onChange={(e) => setSoundType(e.target.value as MetronomeSoundType)}
-              className={SELECT_FIELD}
-            >
-              {METRONOME_SOUND_OPTIONS.map((opt) => (
-                <option key={opt.value} value={opt.value}>
-                  {opt.label}
-                </option>
-              ))}
-            </select>
-            <span
-              className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500"
-              aria-hidden
-            >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M6 9l6 6 6-6" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </span>
-          </div>
-        </div>
-
-        <div className="flex items-center justify-between gap-4 rounded-xl border border-zinc-800 bg-zinc-900/60 px-4 py-3">
-          <div className="min-w-0">
-            <p className="text-sm font-medium text-zinc-200">Beat 1 accent</p>
-            <p className="truncate text-xs text-zinc-500">
-              {accentEnabled ? "Louder, brighter downbeat" : "All downbeats match"}
-            </p>
-          </div>
-          <button
-            type="button"
-            role="switch"
-            aria-checked={accentEnabled}
-            aria-label={accentEnabled ? "Accent on beat 1 enabled" : "Accent on beat 1 disabled"}
-            onClick={() => setAccentEnabled(!accentEnabled)}
-            className={[
-              "relative h-9 w-16 shrink-0 rounded-full transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-400",
-              accentEnabled ? "bg-sky-500" : "bg-zinc-700",
-            ].join(" ")}
-          >
-            <span
-              className={[
-                "absolute left-1 top-1 flex h-7 w-7 items-center justify-center rounded-full bg-white text-[10px] font-bold uppercase tracking-wide text-zinc-900 shadow-md transition-transform duration-200 ease-out",
-                accentEnabled ? "translate-x-7" : "translate-x-0",
-              ].join(" ")}
-            >
-              {accentEnabled ? "On" : "Off"}
-            </span>
-          </button>
-        </div>
-
-        <div>
-          <div className="mb-2 flex items-center justify-between text-sm text-zinc-400">
+          <div className="mb-2 flex items-center justify-between text-sm text-zinc-400"> 
             <span>{minBpm}</span>
             <span>{maxBpm}</span>
           </div>
@@ -191,6 +107,94 @@ export function Metronome() {
         >
           {isPlaying ? "Stop" : "Start"}
         </button>
+
+        <div className="flex items-center justify-between gap-4 rounded-xl border border-zinc-800 bg-zinc-900/60 px-4 py-3">
+          <div className="min-w-0">
+            <p className="text-sm font-medium text-zinc-200">Beat 1 accent</p>
+            <p className="truncate text-xs text-zinc-500">
+              {accentEnabled ? "Louder, brighter downbeat" : "All downbeats match"}
+            </p>
+          </div>
+          <button
+            type="button"
+            role="switch"
+            aria-checked={accentEnabled}
+            aria-label={accentEnabled ? "Accent on beat 1 enabled" : "Accent on beat 1 disabled"}
+            onClick={() => setAccentEnabled(!accentEnabled)}
+            className={[
+              "relative h-9 w-16 shrink-0 rounded-full transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-400",
+              accentEnabled ? "bg-sky-500" : "bg-zinc-700",
+            ].join(" ")}
+          >
+            <span
+              className={[
+                "absolute left-1 top-1 flex h-7 w-7 items-center justify-center rounded-full bg-white text-[10px] font-bold uppercase tracking-wide text-zinc-900 shadow-md transition-transform duration-200 ease-out",
+                accentEnabled ? "translate-x-7" : "translate-x-0",
+              ].join(" ")}
+            >
+              {accentEnabled ? "On" : "Off"}
+            </span>
+          </button>
+        </div>
+
+        <div>
+          <label htmlFor="sound-type" className="mb-2 block text-xs font-medium text-zinc-400">
+            Sound
+          </label>
+          <div className="relative">
+            <select
+              id="sound-type"
+              value={soundType}
+              aria-label="Metronome sound"
+              onChange={(e) => setSoundType(e.target.value as MetronomeSoundType)}
+              className={SELECT_FIELD}
+            >
+              {METRONOME_SOUND_OPTIONS.map((opt) => (
+                <option key={opt.value} value={opt.value}>
+                  {opt.label}
+                </option>
+              ))}
+            </select>
+            <span
+              className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500"
+              aria-hidden
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M6 9l6 6 6-6" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </span>
+          </div>
+        </div>
+        
+        <div>
+          <label htmlFor="subdivision" className="mb-2 block text-xs font-medium text-zinc-400">
+            Subdivision
+          </label>
+          <div className="relative">
+            <select
+              id="subdivision"
+              value={subdivision}
+              aria-label="Subdivision"
+              onChange={(e) => setSubdivision(e.target.value as Subdivision)}
+              className={SELECT_FIELD}
+            >
+              {SUBDIVISION_OPTIONS.map((opt) => (
+                <option key={opt.value} value={opt.value}>
+                  {opt.label}
+                </option>
+              ))}
+            </select>
+            <span
+              className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500"
+              aria-hidden
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M6 9l6 6 6-6" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </span>
+          </div>
+        </div>
+
       </div>
     ),
     [
