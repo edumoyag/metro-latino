@@ -126,23 +126,56 @@ export function Metronome() {
             <span>{minBpm}</span>
             <span>{maxBpm}</span>
           </div>
-          <input
-            type="range"
-            min={minBpm}
-            max={maxBpm}
-            step={1}
-            value={bpm}
-            aria-label="Beats per minute"
-            onChange={(e) => setBpm(Number(e.target.value))}
-            className={[
-              "h-2 w-full cursor-pointer appearance-none rounded-full bg-zinc-800 accent-sky-400",
-              "[&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:appearance-none",
-              "[&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-zinc-950",
-              "[&::-webkit-slider-thumb]:bg-sky-400 [&::-webkit-slider-thumb]:shadow-lg [&::-webkit-slider-thumb]:shadow-sky-500/30",
-              "[&::-moz-range-thumb]:h-5 [&::-moz-range-thumb]:w-5 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-2",
-              "[&::-moz-range-thumb]:border-zinc-950 [&::-moz-range-thumb]:bg-sky-400",
-            ].join(" ")}
-          />
+
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={() => setBpm(bpm - 1)}
+              className={[
+                "flex h-11 w-11 items-center justify-center rounded-full",
+                "bg-zinc-900 text-zinc-100 text-xl font-semibold",
+                "border border-zinc-800",
+                "transition-all hover:bg-zinc-900",
+                "focus-visible:outline focus-visible:outline-2",
+                "focus-visible:outline-offset-2 focus-visible:outline-sky-400",
+              ].join(" ")}
+            >
+              −
+            </button>
+
+            <input
+              type="range"
+              min={minBpm}
+              max={maxBpm}
+              step={1}
+              value={bpm}
+              aria-label="Beats per minute"
+              onChange={(e) => setBpm(Number(e.target.value))}
+              className={[
+                "h-2 w-full cursor-pointer appearance-none rounded-full bg-zinc-800 accent-sky-400",
+                "[&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:appearance-none",
+                "[&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-zinc-950",
+                "[&::-webkit-slider-thumb]:bg-sky-400 [&::-webkit-slider-thumb]:shadow-lg [&::-webkit-slider-thumb]:shadow-sky-500/30",
+                "[&::-moz-range-thumb]:h-5 [&::-moz-range-thumb]:w-5 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-2",
+                "[&::-moz-range-thumb]:border-zinc-950 [&::-moz-range-thumb]:bg-sky-400",
+              ].join(" ")}
+            />
+
+            <button
+              type="button"
+              onClick={() => setBpm(bpm + 1)}
+              className={[
+                "flex h-11 w-11 items-center justify-center rounded-full",
+                "bg-zinc-900 text-zinc-100 text-xl font-semibold",
+                "border border-zinc-800",
+                "transition-all hover:bg-zinc-900",
+                "focus-visible:outline focus-visible:outline-2",
+                "focus-visible:outline-offset-2 focus-visible:outline-sky-400",
+              ].join(" ")}
+            >
+              +
+            </button>
+          </div>
         </div>
 
         <button
